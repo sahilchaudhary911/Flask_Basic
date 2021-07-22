@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, render_template
 from markupsafe import escape
 from flask import url_for
 
@@ -11,9 +11,9 @@ def index():
     return f"homepage"
 
 
-@app.route('/hello')
-def hello_world():
-    return f"hello world"
+# @app.route('/hello')
+# def hello_world():
+#     return f"hello world"
 
 
 # Variable Rules
@@ -56,9 +56,31 @@ def profile(username):
 
 with app.test_request_context():
     print(url_for('index'))
-    print(url_for('login'))
-    print(url_for('login', next='/'))
+    # print(url_for('login'))
+    # print(url_for('login', next='/'))
     print(url_for('profile', username='Sahil Chaudhary'))
+
+
+# HTTP Methods
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return "do_the_login"
+    else:
+        return "show_the_login_form"
+
+
+# Static Files
+# url_for('static', filename='static/style.css')
+
+
+# Rendering Templates
+@app.route('/hello/')
+@app.route('/hello/<name>')
+def hello(name=None):
+    return render_template('hello.html', name=name)
+
 
 """
 export FLASK_APP=hello
